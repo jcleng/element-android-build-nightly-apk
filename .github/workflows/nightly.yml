@@ -69,16 +69,16 @@ jobs:
           name: release-apk
           path: |
             element-android/vector-app/build/outputs/apk/*/nightly/*.apk
-    - name: Release set path
-      run: |
-        touch release.txt
-        cd element-android/vector-app/build/outputs/apk/*/nightly/
-        echo "RELEASE_PATH=$PWD" >> $GITHUB_ENV
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: nightly
-        body_path: release.txt
-        files: ${{ env.RELEASE_PATH }}/*
+      - name: Release set path
+        run: |
+          touch release.txt
+          cd element-android/vector-app/build/outputs/apk/*/nightly/
+          echo "RELEASE_PATH=$PWD" >> $GITHUB_ENV
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: nightly
+          body_path: release.txt
+          files: ${{ env.RELEASE_PATH }}/*
