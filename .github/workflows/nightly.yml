@@ -50,8 +50,8 @@ jobs:
         run: |
           sed -i 's/matrix\.org/${{ inputs.server_url }}/g' ./element-android/vector-config/src/main/res/values/config.xml
           sed -i 's/matrix\.to/${{ inputs.matrix_to_url }}/g' ./element-android/matrix-sdk-android/src/main/java/org/matrix/android/sdk/api/session/permalinks/PermalinkService.kt
-          sed -i '/firebaseAppDistribution/,/}/{//!d}' ./element-android/vector-app/build.gradle
-          sed -i '/firebaseAppDistribution/,/}/{//,+1d}' ./element-android/vector-app/build.gradle
+          # sed -i '/firebaseAppDistribution/,/}/{//!d}' ./element-android/vector-app/build.gradle
+          # sed -i '/firebaseAppDistribution/,/}/{//,+1d}' ./element-android/vector-app/build.gradle
       - name: Prepare changelog file
         run: |
           cd element-android
@@ -59,10 +59,10 @@ jobs:
           sed 's/CHANGES\.md/CHANGES_NIGHTLY\.md/' towncrier.toml.bak > towncrier.toml
           rm towncrier.toml.bak
           yes n | towncrier build --version nightly
-      - name: Build and upload Gplay Nightly APK
+      - name: Build Nightly APK
         run: |
           cd element-android
-          ./gradlew assembleGplayNightly appDistributionUploadGplayNightly $CI_GRADLE_ARG_PROPERTIES
+          ./gradlew assembleGplayNightly $CI_GRADLE_ARG_PROPERTIES
       - name: Upload release APKs
         uses: actions/upload-artifact@v3
         with:
