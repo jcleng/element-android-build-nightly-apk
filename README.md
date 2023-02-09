@@ -29,7 +29,7 @@ D:\work\zulu11.56.19-ca-jdk11.0.15-win_x64\bin\keytool.exe -genkey -v -keystore 
 - pc版本,配置自己的地址
 
 ```shell
-flatpak install flathub im.fluffychat.Fluffychat -y
+flatpak install flathub im.riot.Riot -y
 # 编辑配置文件 https://github.com/vector-im/element-web/blob/develop/docs/config.md
 /home/jcleng/.var/app/im.riot.Riot/config/Element/config.json
 # 配置自己的服务器地址如下
