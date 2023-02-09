@@ -1,6 +1,13 @@
 # element-android-build-nightly-apk
 build nightly apk for https://github.com/vector-im/element-android
 
+
+使用`element-android`的`nightly`版本进行构建
+自定义了默认的`matrix`和`matrix.to`服务器地址(action可以选择)
+使得在国内能直接使用(`matrix.org`国内访问不了)
+签名用的本项目的签名
+
+
 - 生成签名文件
 
 ```shell
