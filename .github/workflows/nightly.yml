@@ -4,10 +4,10 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
-      ssh:
-        description: '立即构建'
+      server_url:
+        description: '服务器默认地址'
         required: true
-        default: 'true'
+        default: 'matrix.leng2011.icu'
 
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3072m -Dfile.encoding=UTF-8 -XX:+HeapDumpOnOutOfMemoryError" -Dkotlin.daemon.jvm.options="-Xmx2560m" -Dkotlin.incremental=false
@@ -44,7 +44,7 @@ jobs:
           sed -i 's/signing.element.nightly.keyPassword=Secret/signing.element.nightly.keyPassword=element123/g' ./element-android/gradle.properties
       - name: Change Default Server Url and no up firebaseAppDistribution
         run: |
-          sed -i 's/matrix\.org/matrix\.leng2011\.icu/g' ./element-android/vector-config/src/main/res/values/config.xml
+          sed -i 's/matrix\.org/${{ inputs.server_url }}/g' ./element-android/vector-config/src/main/res/values/config.xml
           sed -i '/firebaseAppDistribution/,/}/{//!d}' ./element-android/vector-app/build.gradle
           sed -i '/firebaseAppDistribution/,/}/{//,+1d}' ./element-android/vector-app/build.gradle
       - name: Prepare changelog file
