@@ -6,8 +6,8 @@ on:
     inputs:
       ssh:
         description: '立即构建'
-        required: false
-        default: 'false'
+        required: true
+        default: 'true'
 
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3072m -Dfile.encoding=UTF-8 -XX:+HeapDumpOnOutOfMemoryError" -Dkotlin.daemon.jvm.options="-Xmx2560m" -Dkotlin.incremental=false
@@ -36,6 +36,7 @@ jobs:
       - name: New sign file
         run: |
           rm -rf ./element-android/signature/nightly.keystore
+          mkdir -p ./element-android/signature/
           cp ./signkey.jks ./element-android/signature/nightly.keystore
       - name: Nightly storePassword
         run: |
