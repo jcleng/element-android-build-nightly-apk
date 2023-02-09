@@ -7,6 +7,16 @@ build nightly apk for https://github.com/vector-im/element-android
 使得在国内能直接使用(`matrix.org`国内访问不了)
 签名用的本项目的签名
 
+- [关于通知和推送支持了unifiedpush](https://github.com/vector-im/element-android/blob/develop/docs/unifiedpush.md)
+
+```shell
+# gplay(nightly就是)默认是用的google服务(国内无法使用,导致不能收到推送)
+# F-Droid使用的是后台轮询(理论来说比较费电)
+
+# 然后提供了unifiedpush服务: https://unifiedpush.org/users/distributors/ntfy/
+# 安装ntfy,打开会自动注册默认的(统一推送)
+# 最后再element里面设置通知,选择ntfy即可(需要把ntfy和element都设置自启和通知权限)
+```
 
 - 生成签名文件
 
