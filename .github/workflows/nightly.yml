@@ -1,0 +1,61 @@
+name: Build and release nightly APK
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: '立即构建'
+        required: false
+        default: 'false'
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3072m -Dfile.encoding=UTF-8 -XX:+HeapDumpOnOutOfMemoryError" -Dkotlin.daemon.jvm.options="-Xmx2560m" -Dkotlin.incremental=false
+  CI_GRADLE_ARG_PROPERTIES: --stacktrace -PpreDexEnable=false --max-workers 2 --no-daemon
+
+jobs:
+  nightly:
+    name: Build and publish nightly Gplay APK to Firebase
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - name: Configure gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/develop' }}
+      - name: Install towncrier
+        run: |
+          python3 -m pip install towncrier
+      - name: Clone Source
+        run: |
+          git clone --depth=1 -b develop https://github.com/vector-im/element-android.git
+      - name: New sign file
+        run: |
+          rm -rf ./element-android/signature/nightly.keystore
+          cp ./signkey.jks ./element-android/signature/nightly.keystore
+      - name: Nightly storePassword
+        run: |
+          - sed -i 's/signing.element.nightly.storePassword=Secret/signing.element.nightly.storePassword=element123/g' ./element-android/gradle.properties
+          - sed -i 's/signing.element.nightly.keyId=Secret/signing.element.nightly.keyId=element123/g' ./element-android/gradle.properties
+          - sed -i 's/signing.element.nightly.keyPassword=Secret/signing.element.nightly.keyPassword=element123/g' ./element-android/gradle.properties
+      - name: Prepare changelog file
+        run: |
+          cd element-android
+          mv towncrier.toml towncrier.toml.bak
+          sed 's/CHANGES\.md/CHANGES_NIGHTLY\.md/' towncrier.toml.bak > towncrier.toml
+          rm towncrier.toml.bak
+          yes n | towncrier build --version nightly
+      - name: Build and upload Gplay Nightly APK
+        run: |
+          cd element-android
+          ./gradlew assembleGplayNightly appDistributionUploadGplayNightly $CI_GRADLE_ARG_PROPERTIES
+      - name: Upload release APKs
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: |
+            element-android/vector-app/build/outputs/apk/*/nightly/*.apk
