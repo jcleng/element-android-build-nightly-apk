@@ -62,7 +62,8 @@ jobs:
       - name: Build Nightly APK
         run: |
           cd element-android
-          ./gradlew assembleGplayNightly $CI_GRADLE_ARG_PROPERTIES
+          # ./gradlew assembleGplayNightly $CI_GRADLE_ARG_PROPERTIES
+          ./gradlew FdroidRelease $CI_GRADLE_ARG_PROPERTIES
       - name: Upload release APKs
         uses: actions/upload-artifact@v3
         with:
