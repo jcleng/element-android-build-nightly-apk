@@ -40,9 +40,9 @@ jobs:
           cp ./signkey.jks ./element-android/signature/nightly.keystore
       - name: Nightly storePassword
         run: |
-          - sed -i 's/signing.element.nightly.storePassword=Secret/signing.element.nightly.storePassword=element123/g' ./element-android/gradle.properties
-          - sed -i 's/signing.element.nightly.keyId=Secret/signing.element.nightly.keyId=element123/g' ./element-android/gradle.properties
-          - sed -i 's/signing.element.nightly.keyPassword=Secret/signing.element.nightly.keyPassword=element123/g' ./element-android/gradle.properties
+          sed -i 's/signing.element.nightly.storePassword=Secret/signing.element.nightly.storePassword=element123/g' ./element-android/gradle.properties
+          sed -i 's/signing.element.nightly.keyId=Secret/signing.element.nightly.keyId=element123/g' ./element-android/gradle.properties
+          sed -i 's/signing.element.nightly.keyPassword=Secret/signing.element.nightly.keyPassword=element123/g' ./element-android/gradle.properties
       - name: Prepare changelog file
         run: |
           cd element-android
