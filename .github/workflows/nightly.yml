@@ -57,7 +57,7 @@ jobs:
           # sed -i '/firebaseAppDistribution/,/}/{//!d}' ./element-android/vector-app/build.gradle
           # sed -i '/firebaseAppDistribution/,/}/{//,+1d}' ./element-android/vector-app/build.gradle
           # 默认都去解析matrix_to的地址
-          sed -i '/isPermalinkSupported/d' ./element-android/vector/src/main/java/im/vector/app/features/permalink/PermalinkHandler.kt
+          sed -i '/!isPermalinkSupported(fragmentActivity/d' ./element-android/vector/src/main/java/im/vector/app/features/permalink/PermalinkHandler.kt
       - name: Prepare changelog file
         run: |
           cd element-android
