@@ -50,8 +50,14 @@ jobs:
         run: |
           sed -i 's/matrix\.org/${{ inputs.server_url }}/g' ./element-android/vector-config/src/main/res/values/config.xml
           sed -i 's/matrix\.to/${{ inputs.matrix_to_url }}/g' ./element-android/matrix-sdk-android/src/main/java/org/matrix/android/sdk/api/session/permalinks/PermalinkService.kt
+          sed -i 's/matrix\.to/${{ inputs.matrix_to_url }}/g' ./element-android/vector/src/main/AndroidManifest.xml
+          # 不修改这个
+          # sed -i '/<\/string-array>/i\<item>${{ inputs.matrix_to_url }}<\/item>' ./element-android/vector-config/src/main/res/values/config.xml
+          # sed -i '/matrix\.to/i\\"https://${{ inputs.matrix_to_url }}\",' ./element-android/vector/src/main/java/im/vector/app/features/home/room/detail/timeline/url/PreviewUrlRetriever.kt
           # sed -i '/firebaseAppDistribution/,/}/{//!d}' ./element-android/vector-app/build.gradle
           # sed -i '/firebaseAppDistribution/,/}/{//,+1d}' ./element-android/vector-app/build.gradle
+          # 默认都去解析matrix_to的地址
+          sed -i '/isPermalinkSupported/d' ./element-android/vector/src/main/java/im/vector/app/features/permalink/PermalinkHandler.kt
       - name: Prepare changelog file
         run: |
           cd element-android
